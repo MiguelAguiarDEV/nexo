@@ -86,26 +86,26 @@ CICLO 0: INFRAESTRUCTURA & SHELL (The Foundation)
 Objetivo: Entorno funcional, autenticación robusta y sistema de navegación por contextos.
 
 0.1. Setup Inicial
-[ ] Inicializar Proyecto Next.js 14
+[x] Inicializar Proyecto Next.js 14
 
 bunx create-next-app@latest (TS, Tailwind, ESLint, App Router).
 
 Limpieza de boilerplate (page.tsx, globals.css).
 
-[ ] Configuración de Herramientas de Calidad
+[x] Configuración de Herramientas de Calidad
 
 Instalar y configurar Biome (linter/formatter).
 
 Configurar clsx y tailwind-merge para gestión de clases.
 
-[ ] Instalación UI Kit (Shadcn)
+[x] Instalación UI Kit (Shadcn)
 
 Inicializar Shadcn/ui.
 
 Instalar componentes base: button, input, dropdown-menu, avatar, card, separator, sheet (mobile sidebar).
 
 0.2. Base de Datos (Turso)
-[ ] Setup Turso
+[x] Setup Turso
 
 Instalar CLI turso.
 
@@ -120,7 +120,7 @@ Configurar @libsql/client en src/lib/db.ts.
 Definir variables de entorno en .env.local.
 
 0.3. Autenticación (Clerk)
-[ ] Setup Clerk
+[x] Setup Clerk
 
 Crear aplicación en Clerk Dashboard.
 
@@ -128,7 +128,7 @@ Habilitar Organizations (Settings > Organizations).
 
 Configurar roles: Admin (Creador), Member (Roommate).
 
-[ ] Integración Next.js
+[x] Integración Next.js
 
 Instalar @clerk/nextjs.
 
@@ -136,12 +136,12 @@ Envolver app en <ClerkProvider>.
 
 Crear middleware.ts para proteger rutas (publicRoutes: [] excepto login/signup).
 
-[ ] Páginas Auth
+[x] Páginas Auth
 
 Crear rutas (auth)/sign-in y (auth)/sign-up con componentes de Clerk montados.
 
 0.4. Layout & Context Switching
-[ ] Global Layout
+[x] Global Layout
 
 Crear src/components/layout/Sidebar.tsx.
 
