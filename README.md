@@ -113,7 +113,7 @@ Crear base de datos: turso db create <project-name>.
 
 Obtener URL y Auth Token.
 
-[ ] Conexión Cliente
+[x] Conexión Cliente
 
 Configurar @libsql/client en src/lib/db.ts.
 
@@ -147,7 +147,7 @@ Crear src/components/layout/Sidebar.tsx.
 
 Implementar <UserButton /> (Perfil) y <OrganizationSwitcher /> (Contexto).
 
-[ ] Lógica de Navegación
+[x] Lógica de Navegación
 
 El Sidebar debe ser responsivo (Sheet en móvil, Fixed en desktop).
 
@@ -157,25 +157,25 @@ CICLO 1: MOTOR DE DATOS (The Kernel)
 Objetivo: Esquema de base de datos polimórfico y utilidades de backend.
 
 1.1. Schema Design
-[ ] Definición SQL
+[x] Definición SQL
 
 Diseñar tabla items o tablas separadas (events, expenses, chores, groceries) unificadas por lógica de scope.
 
 Columnas obligatorias en todas: id, created_by (user_id), org_id (nullable), created_at.
 
-[ ] Migración Inicial
+[x] Migración Inicial
 
 Ejecutar script SQL en Turso para crear tablas.
 
 1.2. Tipado TypeScript
-[ ] Interfaces Globales
+[x] Interfaces Globales
 
 Definir type Scope = 'PERSONAL' | 'HOUSEHOLD'.
 
 Definir interfaces para los modelos de BD en src/types/db.ts.
 
 1.3. Server Actions Base
-[ ] Utilidad de Contexto
+[x] Utilidad de Contexto
 
 Crear función getSafeAuth() que devuelva userId y orgId desde Clerk, lanzando error si no hay sesión.
 
@@ -187,7 +187,7 @@ CICLO 2: MÓDULO DESPENSA (First Feature)
 Objetivo: Lista de compra sincronizada en tiempo real (CRUD simple).
 
 2.1. Backend Despensa
-[ ] Schema Específico
+[x] Schema Específico
 
 Tabla groceries (id, name, is_checked, category, created_by, org_id).
 

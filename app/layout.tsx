@@ -1,3 +1,4 @@
+import { MobileNav } from "@/components/layouts/mobile-nav";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ClerkProvider, SignedIn, UserButton } from "@clerk/nextjs";
@@ -38,10 +39,15 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <header className="flex justify-between items-center px-6 h-16 border-b">
-              <Link href="/" className="text-xl font-bold tracking-tighter">
-                nexo
-              </Link>
+            <header className="flex justify-between items-center px-6 h-16 border-b sticky top-0 bg-background z-50">
+              <div className="flex items-center gap-2">
+                <SignedIn>
+                  <MobileNav />
+                </SignedIn>
+                <Link href="/" className="text-xl font-bold tracking-tighter">
+                  nexo
+                </Link>
+              </div>
               <div className="flex items-center gap-4">
                 <ThemeToggle />
                 <SignedIn>
@@ -49,7 +55,7 @@ export default function RootLayout({
                 </SignedIn>
               </div>
             </header>
-            <main>{children}</main>
+            {children}
           </ThemeProvider>
         </body>
       </html>
