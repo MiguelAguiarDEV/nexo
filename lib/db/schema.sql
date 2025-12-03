@@ -48,13 +48,23 @@ CREATE TABLE IF NOT EXISTS events (
   updated_at TEXT DEFAULT (datetime('now'))
 );
 
--- Groceries/Shopping list table
-CREATE TABLE IF NOT EXISTS groceries (
+-- Shopping list table (groceries, household items, clothing, etc.)
+CREATE TABLE IF NOT EXISTS shopping_items (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   quantity INTEGER DEFAULT 1,
   unit TEXT,
-  category TEXT,
+  -- Item categorization
+  type TEXT DEFAULT 'other' CHECK (type IN ('food', 'kitchen', 'bathroom', 'cleaning', 'clothing', 'electronics', 'home', 'other')),
+  category TEXT, -- Subcategory within type (e.g., "fruits", "dairy" for food)
+  -- Priority: 1 (urgent), 2 (high), 3 (normal), 4 (low)
+  priority INTEGER DEFAULT 3 CHECK (priority BETWEEN 1 AND 4),
+  -- Optional price and link
+  price REAL,
+  currency TEXT DEFAULT 'EUR',
+  url TEXT,
+  notes TEXT,
+  -- Status
   is_checked INTEGER DEFAULT 0,
   checked_by TEXT REFERENCES users(id),
   checked_at TEXT,
@@ -111,8 +121,10 @@ CREATE INDEX IF NOT EXISTS idx_events_org ON events(org_id);
 CREATE INDEX IF NOT EXISTS idx_events_user ON events(created_by);
 CREATE INDEX IF NOT EXISTS idx_events_date ON events(start_date);
 
-CREATE INDEX IF NOT EXISTS idx_groceries_org ON groceries(org_id);
-CREATE INDEX IF NOT EXISTS idx_groceries_checked ON groceries(is_checked);
+CREATE INDEX IF NOT EXISTS idx_shopping_items_org ON shopping_items(org_id);
+CREATE INDEX IF NOT EXISTS idx_shopping_items_checked ON shopping_items(is_checked);
+CREATE INDEX IF NOT EXISTS idx_shopping_items_type ON shopping_items(type);
+CREATE INDEX IF NOT EXISTS idx_shopping_items_priority ON shopping_items(priority);
 
 CREATE INDEX IF NOT EXISTS idx_expenses_org ON expenses(org_id);
 CREATE INDEX IF NOT EXISTS idx_expenses_date ON expenses(date);

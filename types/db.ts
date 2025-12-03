@@ -50,17 +50,44 @@ export interface Event extends BaseEntity {
   updated_at: string;
 }
 
-// Grocery item
-export interface Grocery extends BaseEntity {
+// Shopping item types
+export const ITEM_TYPES = [
+  "food",
+  "kitchen",
+  "bathroom",
+  "cleaning",
+  "clothing",
+  "electronics",
+  "home",
+  "other",
+] as const;
+
+export type ItemType = (typeof ITEM_TYPES)[number];
+
+// Priority levels (1 = urgent, 4 = low)
+export const PRIORITY_LEVELS = [1, 2, 3, 4] as const;
+export type Priority = (typeof PRIORITY_LEVELS)[number];
+
+// Shopping item (replaces Grocery)
+export interface ShoppingItem extends BaseEntity {
   id: number;
   name: string;
   quantity: number;
   unit: string | null;
+  type: ItemType;
   category: string | null;
+  priority: Priority;
+  price: number | null;
+  currency: string;
+  url: string | null;
+  notes: string | null;
   is_checked: boolean;
   checked_by: string | null;
   checked_at: string | null;
 }
+
+// Legacy alias (for backwards compatibility during transition)
+export type Grocery = ShoppingItem;
 
 // Expense
 export interface Expense {
@@ -97,6 +124,37 @@ export interface Chore extends BaseEntity {
   completed_at: string | null;
   updated_at: string;
 }
+
+// API Key
+export interface ApiKey {
+  id: number;
+  key_hash: string;
+  key_prefix: string;
+  user_id: string;
+  org_id: string | null;
+  name: string;
+  scopes: string[]; // Parsed from JSON
+  is_active: boolean;
+  last_used_at: string | null;
+  expires_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// API Key scopes
+export const API_SCOPES = [
+  "*", // All permissions
+  "shopping:read",
+  "shopping:write",
+  "events:read",
+  "events:write",
+  "expenses:read",
+  "expenses:write",
+  "chores:read",
+  "chores:write",
+] as const;
+
+export type ApiScope = (typeof API_SCOPES)[number];
 
 // Insert types (for creating new records)
 export type InsertEvent = Omit<Event, "id" | "created_at" | "updated_at">;
