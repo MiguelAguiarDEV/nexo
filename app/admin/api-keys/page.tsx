@@ -1,9 +1,8 @@
+import { ADMIN_EMAIL } from "@/lib/navigation";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { getApiKeysAction } from "./actions";
 import { ApiKeysClient } from "./api-keys-client";
-
-const ADMIN_EMAIL = "miguel.santiesteban.aguiar@gmail.com";
 
 export default async function ApiKeysPage() {
   const user = await currentUser();

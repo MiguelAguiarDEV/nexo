@@ -1,11 +1,10 @@
 "use server";
 
 import { createApiKey, listApiKeys, revokeApiKey } from "@/lib/api/keys";
+import { ADMIN_EMAIL } from "@/lib/navigation";
 import type { ApiScope } from "@/types/db";
 import { currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-
-const ADMIN_EMAIL = "miguel.santiesteban.aguiar@gmail.com";
 
 async function checkAdminAccess() {
   const user = await currentUser();

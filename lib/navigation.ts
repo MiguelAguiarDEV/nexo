@@ -1,6 +1,7 @@
 import {
   Calendar,
   Home,
+  Key,
   ListTodo,
   Receipt,
   ShoppingCart,
@@ -40,3 +41,13 @@ export const navItems: NavItem[] = [
     icon: ListTodo,
   },
 ];
+
+export const adminItems: NavItem[] = [
+  {
+    title: "API Keys",
+    href: "/admin/api-keys",
+    icon: Key,
+  },
+];
+
+export const ADMIN_EMAIL = "miguel.santiesteban.aguiar@gmail.com";
