@@ -1,8 +1,9 @@
 import { MobileNav } from "@/components/layouts/mobile-nav";
+import { PWARegister } from "@/components/pwa-register";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ClerkProvider, SignedIn, UserButton } from "@clerk/nextjs";
-import { type Metadata } from "next";
+import { type Metadata, type Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
@@ -18,8 +19,31 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "nexo",
+  title: "Nexo",
   description: "Tu agenda personal y de convivencia",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Nexo",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
@@ -39,6 +63,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <PWARegister />
             <header className="flex justify-between items-center px-6 h-16 border-b sticky top-0 bg-background z-50">
               <div className="flex items-center gap-2">
                 <SignedIn>
