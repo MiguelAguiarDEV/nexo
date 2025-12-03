@@ -25,8 +25,8 @@ export const navItems: NavItem[] = [
     icon: Calendar,
   },
   {
-    title: "Despensa",
-    href: "/pantry",
+    title: "Compras",
+    href: "/shopping",
     icon: ShoppingCart,
   },
   {
