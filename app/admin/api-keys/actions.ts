@@ -30,7 +30,7 @@ export async function getApiKeysAction() {
     id: key.id,
     name: key.name,
     key_prefix: key.key_prefix,
-    scopes: key.scopes,
+    scopes: key.scopes as ApiScope[],
     is_active: key.is_active,
     created_at: key.created_at,
     last_used_at: key.last_used_at,
