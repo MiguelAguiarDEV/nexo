@@ -16,7 +16,7 @@ export function Sidebar() {
 
   return (
     <aside className="hidden lg:flex flex-col w-64 border-r h-[calc(100vh-4rem)] sticky top-16">
-      <nav className="flex-1 p-4">
+      <nav className="flex-1 p-4 overflow-y-auto">
         <ul className="space-y-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href;

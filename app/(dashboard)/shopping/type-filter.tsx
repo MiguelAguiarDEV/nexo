@@ -44,12 +44,12 @@ export function TypeFilter({
   const AllIcon = TYPE_ICONS.all;
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:overflow-visible scrollbar-hide">
       {/* All button */}
       <Button
         variant={currentType === null ? "default" : "outline"}
         size="sm"
-        className="h-8 gap-1.5"
+        className="h-8 gap-1.5 shrink-0"
         onClick={() => onTypeChange(null)}
       >
         <AllIcon className="h-3.5 w-3.5" />
@@ -74,7 +74,7 @@ export function TypeFilter({
             variant={currentType === type ? "default" : "outline"}
             size="sm"
             className={cn(
-              "h-8 gap-1.5",
+              "h-8 gap-1.5 shrink-0",
               currentType !== type && "hover:border-current"
             )}
             style={

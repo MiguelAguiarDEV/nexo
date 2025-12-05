@@ -1,4 +1,3 @@
-import { MobileNav } from "@/components/layouts/mobile-nav";
 import { PWARegister } from "@/components/pwa-register";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -44,6 +43,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -64,16 +64,11 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <PWARegister />
-            <header className="flex justify-between items-center px-6 h-16 border-b sticky top-0 bg-background z-50">
-              <div className="flex items-center gap-2">
-                <SignedIn>
-                  <MobileNav />
-                </SignedIn>
-                <Link href="/" className="text-xl font-bold tracking-tighter">
-                  nexo
-                </Link>
-              </div>
-              <div className="flex items-center gap-4">
+            <header className="flex justify-between items-center px-4 lg:px-6 h-14 lg:h-16 border-b sticky top-0 bg-background/80 backdrop-blur-lg z-50">
+              <Link href="/" className="text-xl font-bold tracking-tighter">
+                nexo
+              </Link>
+              <div className="flex items-center gap-3 lg:gap-4">
                 <ThemeToggle />
                 <SignedIn>
                   <UserButton />

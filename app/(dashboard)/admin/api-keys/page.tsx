@@ -20,10 +20,10 @@ export default async function ApiKeysPage() {
   const keys = await getApiKeysAction();
 
   return (
-    <div className="container max-w-4xl py-8 px-4">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold">API Keys</h1>
-        <p className="text-muted-foreground mt-1">
+    <div className="max-w-4xl py-6 sm:py-8 px-4 sm:px-6">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-bold">API Keys</h1>
+        <p className="text-sm text-muted-foreground mt-1">
           Manage API keys for external access (MCP, n8n, etc.)
         </p>
       </div>

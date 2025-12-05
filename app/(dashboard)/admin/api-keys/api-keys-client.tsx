@@ -150,7 +150,7 @@ export function ApiKeysClient({ initialKeys }: Props) {
 
               <div>
                 <Label>Permissions</Label>
-                <div className="grid grid-cols-2 gap-2 mt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
                   {AVAILABLE_SCOPES.map((scope) => (
                     <label
                       key={scope.value}
@@ -219,19 +219,19 @@ export function ApiKeysClient({ initialKeys }: Props) {
               key={key.id}
               className={!key.is_active ? "opacity-50" : undefined}
             >
-              <CardContent className="py-4">
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <Key className="h-4 w-4 text-muted-foreground" />
-                      <span className="font-medium">{key.name}</span>
+              <CardContent className="py-4 px-4 sm:px-6">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                  <div className="space-y-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <Key className="h-4 w-4 text-muted-foreground shrink-0" />
+                      <span className="font-medium truncate">{key.name}</span>
                       {!key.is_active && (
-                        <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">
+                        <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded shrink-0">
                           Revoked
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground font-mono">
+                    <p className="text-sm text-muted-foreground font-mono truncate">
                       {key.key_prefix}...
                     </p>
                     <div className="flex flex-wrap gap-1 mt-2">
@@ -270,7 +270,7 @@ export function ApiKeysClient({ initialKeys }: Props) {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50 shrink-0 self-end sm:self-start"
                       onClick={() => handleRevoke(key.id)}
                       disabled={isPending}
                     >
@@ -286,28 +286,34 @@ export function ApiKeysClient({ initialKeys }: Props) {
 
       {/* Usage Instructions */}
       <Card>
-        <CardHeader>
-          <CardTitle>How to Use</CardTitle>
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="text-base sm:text-lg">How to Use</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 px-4 sm:px-6">
           <div>
-            <h3 className="font-medium mb-2">Authentication Header</h3>
-            <code className="block p-3 bg-muted rounded text-sm">
+            <h3 className="font-medium mb-2 text-sm sm:text-base">
+              Authentication Header
+            </h3>
+            <code className="block p-2 sm:p-3 bg-muted rounded text-xs sm:text-sm overflow-x-auto">
               Authorization: Bearer YOUR_API_KEY
             </code>
           </div>
 
           <div>
-            <h3 className="font-medium mb-2">Example: Get Shopping List</h3>
-            <code className="block p-3 bg-muted rounded text-sm whitespace-pre-wrap">
+            <h3 className="font-medium mb-2 text-sm sm:text-base">
+              Example: Get Shopping List
+            </h3>
+            <code className="block p-2 sm:p-3 bg-muted rounded text-xs sm:text-sm whitespace-pre-wrap overflow-x-auto">
               {`curl -X GET "https://your-domain/api/shopping" \\
   -H "Authorization: Bearer nxk_your_key_here"`}
             </code>
           </div>
 
           <div>
-            <h3 className="font-medium mb-2">Example: Add Shopping Item</h3>
-            <code className="block p-3 bg-muted rounded text-sm whitespace-pre-wrap">
+            <h3 className="font-medium mb-2 text-sm sm:text-base">
+              Example: Add Shopping Item
+            </h3>
+            <code className="block p-2 sm:p-3 bg-muted rounded text-xs sm:text-sm whitespace-pre-wrap overflow-x-auto">
               {`curl -X POST "https://your-domain/api/shopping" \\
   -H "Authorization: Bearer nxk_your_key_here" \\
   -H "Content-Type: application/json" \\
@@ -316,22 +322,31 @@ export function ApiKeysClient({ initialKeys }: Props) {
           </div>
 
           <div>
-            <h3 className="font-medium mb-2">Available Endpoints</h3>
-            <ul className="text-sm space-y-1 text-muted-foreground">
+            <h3 className="font-medium mb-2 text-sm sm:text-base">
+              Available Endpoints
+            </h3>
+            <ul className="text-xs sm:text-sm space-y-1 text-muted-foreground">
               <li>
-                <code>GET /api/shopping</code> - List all items
+                <code className="text-foreground">GET /api/shopping</code> -
+                List all items
               </li>
               <li>
-                <code>POST /api/shopping</code> - Create new item
+                <code className="text-foreground">POST /api/shopping</code> -
+                Create new item
               </li>
               <li>
-                <code>GET /api/shopping/:id</code> - Get single item
+                <code className="text-foreground">GET /api/shopping/:id</code> -
+                Get single item
               </li>
               <li>
-                <code>PATCH /api/shopping/:id</code> - Update item
+                <code className="text-foreground">PATCH /api/shopping/:id</code>{" "}
+                - Update item
               </li>
               <li>
-                <code>DELETE /api/shopping/:id</code> - Delete item
+                <code className="text-foreground">
+                  DELETE /api/shopping/:id
+                </code>{" "}
+                - Delete item
               </li>
             </ul>
           </div>

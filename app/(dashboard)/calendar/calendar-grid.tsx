@@ -101,12 +101,13 @@ export function CalendarGrid({
     <div className="border rounded-lg overflow-hidden">
       {/* Header - Days of week */}
       <div className="grid grid-cols-7 bg-muted">
-        {DAYS_OF_WEEK.map((day) => (
+        {DAYS_OF_WEEK.map((day, index) => (
           <div
             key={day}
-            className="p-2 text-center text-sm font-medium text-muted-foreground border-b"
+            className="p-1 sm:p-2 text-center text-[10px] sm:text-sm font-medium text-muted-foreground border-b"
           >
-            {day}
+            <span className="sm:hidden">{day.charAt(0)}</span>
+            <span className="hidden sm:inline">{day}</span>
           </div>
         ))}
       </div>
@@ -119,14 +120,14 @@ export function CalendarGrid({
             key={index}
             onClick={() => onDateClick(day.date)}
             className={cn(
-              "min-h-24 p-1 border-b border-r text-left transition-colors hover:bg-muted/50",
+              "min-h-16 sm:min-h-24 p-0.5 sm:p-1 border-b border-r text-left transition-colors hover:bg-muted/50 active:bg-muted",
               !day.isCurrentMonth && "bg-muted/30 text-muted-foreground",
               day.isToday && "bg-primary/5"
             )}
           >
             <div
               className={cn(
-                "text-sm font-medium mb-1 w-7 h-7 flex items-center justify-center rounded-full",
+                "text-xs sm:text-sm font-medium mb-0.5 sm:mb-1 w-5 h-5 sm:w-7 sm:h-7 flex items-center justify-center rounded-full",
                 day.isToday && "bg-primary text-primary-foreground"
               )}
             >
@@ -134,8 +135,8 @@ export function CalendarGrid({
             </div>
 
             {/* Events for this day */}
-            <div className="space-y-1">
-              {day.events.slice(0, 3).map((event) => (
+            <div className="space-y-0.5 sm:space-y-1">
+              {day.events.slice(0, 2).map((event) => (
                 <button
                   type="button"
                   key={event.id}
@@ -143,18 +144,22 @@ export function CalendarGrid({
                     e.stopPropagation();
                     onEventClick(event);
                   }}
-                  className="w-full text-left text-xs p-1 rounded truncate"
+                  className="w-full text-left text-[10px] sm:text-xs p-0.5 sm:p-1 rounded truncate"
                   style={{
                     backgroundColor: `${event.color}20`,
                     color: event.color,
                   }}
                 >
-                  {event.title}
+                  <span className="hidden sm:inline">{event.title}</span>
+                  <span
+                    className="sm:hidden block w-full h-1.5 rounded-full"
+                    style={{ backgroundColor: event.color }}
+                  />
                 </button>
               ))}
-              {day.events.length > 3 && (
-                <div className="text-xs text-muted-foreground px-1">
-                  +{day.events.length - 3} más
+              {day.events.length > 2 && (
+                <div className="text-[10px] sm:text-xs text-muted-foreground px-0.5 sm:px-1">
+                  +{day.events.length - 2}
                 </div>
               )}
             </div>

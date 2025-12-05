@@ -27,11 +27,13 @@ export default async function CalendarPage({ searchParams }: PageProps) {
   const events = await getEventsForMonth(validYear, validMonth);
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       <div className="max-w-5xl mx-auto">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold tracking-tight">Agenda</h1>
-          <p className="text-muted-foreground mt-1">
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+            Agenda
+          </h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
             Gestiona tus eventos y citas
           </p>
         </div>

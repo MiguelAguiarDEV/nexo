@@ -77,28 +77,47 @@ export function CalendarPageClient({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="icon" onClick={goToPrevMonth}>
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-8 w-8 sm:h-9 sm:w-9"
+            onClick={goToPrevMonth}
+          >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="icon" onClick={goToNextMonth}>
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-8 w-8 sm:h-9 sm:w-9"
+            onClick={goToNextMonth}
+          >
             <ChevronRight className="h-4 w-4" />
           </Button>
-          <h2 className="text-xl font-semibold ml-2">
+          <h2 className="text-base sm:text-xl font-semibold ml-1 sm:ml-2">
             {MONTHS[month - 1]} {year}
           </h2>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={goToToday}>
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 text-xs sm:text-sm px-2 sm:px-3"
+            onClick={goToToday}
+          >
             Hoy
           </Button>
-          <Button onClick={handleAddClick}>
-            <Plus className="h-4 w-4 mr-2" />
-            Evento
+          <Button
+            size="sm"
+            className="h-8 px-2 sm:px-3"
+            onClick={handleAddClick}
+          >
+            <Plus className="h-4 w-4 sm:mr-2" />
+            <span className="hidden sm:inline">Evento</span>
           </Button>
         </div>
       </div>
