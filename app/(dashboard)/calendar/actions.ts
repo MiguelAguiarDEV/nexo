@@ -24,6 +24,9 @@ function rowToEvent(row: Record<string, unknown>): Event {
   };
 }
 
+// Columns to select (avoid SELECT *)
+const EVENT_COLUMNS = `id, title, description, location, start_date, end_date, is_all_day, color, created_by, org_id, created_at, updated_at`;
+
 // Get all events for the user/org, optionally filtered by date range
 export async function getEvents(params?: {
   startDate?: string;
@@ -41,19 +44,19 @@ export async function getEvents(params?: {
   if (orgId) {
     // Household mode - get org events
     if (params?.startDate && params?.endDate) {
-      sql = `SELECT * FROM events WHERE org_id = ? AND start_date >= ? AND start_date <= ? ORDER BY start_date ASC`;
+      sql = `SELECT ${EVENT_COLUMNS} FROM events WHERE org_id = ? AND start_date >= ? AND start_date <= ? ORDER BY start_date ASC`;
       args = [orgId, params.startDate, params.endDate];
     } else {
-      sql = `SELECT * FROM events WHERE org_id = ? ORDER BY start_date ASC`;
+      sql = `SELECT ${EVENT_COLUMNS} FROM events WHERE org_id = ? ORDER BY start_date ASC`;
       args = [orgId];
     }
   } else {
     // Personal mode - get user's personal events
     if (params?.startDate && params?.endDate) {
-      sql = `SELECT * FROM events WHERE created_by = ? AND org_id IS NULL AND start_date >= ? AND start_date <= ? ORDER BY start_date ASC`;
+      sql = `SELECT ${EVENT_COLUMNS} FROM events WHERE created_by = ? AND org_id IS NULL AND start_date >= ? AND start_date <= ? ORDER BY start_date ASC`;
       args = [userId, params.startDate, params.endDate];
     } else {
-      sql = `SELECT * FROM events WHERE created_by = ? AND org_id IS NULL ORDER BY start_date ASC`;
+      sql = `SELECT ${EVENT_COLUMNS} FROM events WHERE created_by = ? AND org_id IS NULL ORDER BY start_date ASC`;
       args = [userId];
     }
   }
@@ -83,10 +86,10 @@ export async function getEventsForMonth(
   let args: (string | null)[];
 
   if (orgId) {
-    sql = `SELECT * FROM events WHERE org_id = ? AND start_date >= ? AND start_date < ? ORDER BY start_date ASC`;
+    sql = `SELECT ${EVENT_COLUMNS} FROM events WHERE org_id = ? AND start_date >= ? AND start_date < ? ORDER BY start_date ASC`;
     args = [orgId, startDate, endDate];
   } else {
-    sql = `SELECT * FROM events WHERE created_by = ? AND org_id IS NULL AND start_date >= ? AND start_date < ? ORDER BY start_date ASC`;
+    sql = `SELECT ${EVENT_COLUMNS} FROM events WHERE created_by = ? AND org_id IS NULL AND start_date >= ? AND start_date < ? ORDER BY start_date ASC`;
     args = [userId, startDate, endDate];
   }
 

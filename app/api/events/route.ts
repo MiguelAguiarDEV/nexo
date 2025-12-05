@@ -1,6 +1,5 @@
 import {
   apiError,
-  apiSuccess,
   authenticateApiRequest,
   corsHeaders,
   handleCors,
@@ -70,7 +69,15 @@ export async function GET(request: Request) {
     rowToEvent(row as Record<string, unknown>)
   );
 
-  return apiSuccess({ data: events, count: events.length });
+  return NextResponse.json(
+    { success: true, data: events, count: events.length },
+    {
+      headers: {
+        ...corsHeaders,
+        "Cache-Control": "private, max-age=0, stale-while-revalidate=60",
+      },
+    }
+  );
 }
 
 /**

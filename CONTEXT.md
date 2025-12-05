@@ -1,7 +1,7 @@
 # NEXO - Project Context File
 
 > **Last Updated:** 2024-12-05
-> **Current Phase:** Ciclo 3.5 - PWA + Mobile Responsive
+> **Current Phase:** Ciclo 3.6 - PWA Performance Optimization
 
 ## Project Overview
 
@@ -250,9 +250,22 @@ CREATE TABLE api_keys (
   - Compact calendar grid for mobile
   - Safe area support for notch devices
 
-## Current Work - Ciclo 4: Finance Module
+## Current Work - Ciclo 3.6: PWA Performance Optimization
 
 ### To Do
+
+- [ ] **Análisis de rendimiento** - Identificar cuellos de botella con Lighthouse/DevTools
+- [ ] **Service Worker mejorado** - Precaching de rutas críticas y assets
+- [ ] **Dynamic imports** - Lazy load de componentes pesados (Calendar, Shopping list)
+- [ ] **Optimizar queries DB** - SELECT solo campos necesarios, paginación
+- [ ] **Reducir JavaScript cliente** - Más Server Components, menos "use client"
+- [ ] **Streaming/Suspense** - Loading states para componentes lentos
+- [ ] **Cache HTTP headers** - Añadir headers en route handlers
+- [ ] **Bundle analysis** - Identificar dependencias pesadas
+
+## Upcoming Work - Ciclo 4: Finance Module
+
+### Pending Tasks
 
 - [ ] Schema expenses (already defined)
 - [ ] Server Actions for expenses (CRUD)

@@ -33,6 +33,9 @@ function rowToShoppingItem(row: Record<string, unknown>): ShoppingItem {
   };
 }
 
+// Columns to select (avoid SELECT *)
+const SHOPPING_COLUMNS = `id, name, quantity, unit, type, category, priority, price, currency, url, notes, is_checked, checked_by, checked_at, created_by, org_id, created_at`;
+
 // Get all shopping items for the current user/org
 export async function getShoppingItems(
   typeFilter?: ItemType
@@ -44,10 +47,10 @@ export async function getShoppingItems(
   const args: (string | number | null)[] = [];
 
   if (scope === "household" && orgId) {
-    sql = `SELECT * FROM shopping_items WHERE org_id = ?`;
+    sql = `SELECT ${SHOPPING_COLUMNS} FROM shopping_items WHERE org_id = ?`;
     args.push(orgId);
   } else {
-    sql = `SELECT * FROM shopping_items WHERE created_by = ? AND org_id IS NULL`;
+    sql = `SELECT ${SHOPPING_COLUMNS} FROM shopping_items WHERE created_by = ? AND org_id IS NULL`;
     args.push(userId);
   }
 

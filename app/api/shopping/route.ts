@@ -97,7 +97,12 @@ export async function GET(request: Request) {
 
   return NextResponse.json(
     { success: true, data: items, count: items.length },
-    { headers: corsHeaders }
+    {
+      headers: {
+        ...corsHeaders,
+        "Cache-Control": "private, max-age=0, stale-while-revalidate=30",
+      },
+    }
   );
 }
 
