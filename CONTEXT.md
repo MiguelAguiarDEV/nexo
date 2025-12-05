@@ -1,7 +1,7 @@
 # NEXO - Project Context File
 
-> **Last Updated:** 2024-12-03
-> **Current Phase:** Ciclo 2.5 - Shopping Module (EXPANDED) + REST API
+> **Last Updated:** 2024-12-05
+> **Current Phase:** Ciclo 3.5 - PWA + Mobile Responsive
 
 ## Project Overview
 
@@ -49,7 +49,8 @@ lib/
 ├── navigation.ts        # Navigation items + admin config
 ├── utils.ts             # Utility functions (cn)
 ├── constants/
-│   └── shopping.ts      # Item types and priority configs
+│   ├── shopping.ts      # Item types and priority configs
+│   └── calendar.ts      # Event colors, days, months
 ├── api/
 │   ├── keys.ts          # API key generation/validation
 │   └── auth.ts          # API authentication middleware
@@ -58,6 +59,7 @@ lib/
 
 app/
 ├── (dashboard)/
+│   ├── home/            # Dashboard home
 │   ├── shopping/        # Shopping list module
 │   │   ├── actions.ts   # Server actions
 │   │   ├── page.tsx
@@ -66,16 +68,33 @@ app/
 │   │   ├── add-item-drawer.tsx  # Mobile-friendly drawer
 │   │   ├── type-filter.tsx
 │   │   └── price-summary.tsx
+│   ├── calendar/        # Calendar module
+│   │   ├── actions.ts   # Server actions (CRUD events)
+│   │   ├── page.tsx
+│   │   ├── calendar-page-client.tsx
+│   │   ├── calendar-grid.tsx    # Monthly grid view
+│   │   └── event-drawer.tsx     # Create/edit events
+│   ├── finance/         # (pending)
+│   ├── chores/          # (pending)
 │   └── admin/
 │       └── api-keys/    # API key management (admin only)
 ├── api/
 │   ├── shopping/        # REST API endpoints
 │   │   ├── route.ts     # GET list, POST create
 │   │   └── [id]/route.ts # GET, PATCH, DELETE single item
+│   ├── events/          # REST API endpoints
+│   │   ├── route.ts     # GET list, POST create
+│   │   └── [id]/route.ts # GET, PATCH, DELETE single event
 │   └── keys/            # API key management endpoints
 │       ├── route.ts
 │       ├── [id]/route.ts
 │       └── generate/route.ts
+
+public/
+├── manifest.json        # PWA manifest
+├── sw.js                # Service Worker
+├── icon-192.svg         # PWA icon
+└── icon-512.svg         # PWA icon
 
 types/
 └── db.ts                # TypeScript interfaces + API scopes
@@ -83,7 +102,9 @@ types/
 components/
 ├── layouts/
 │   ├── sidebar.tsx      # Desktop nav (with admin section)
-│   └── mobile-nav.tsx   # Mobile sheet navigation
+│   ├── mobile-nav.tsx   # Mobile sheet navigation
+│   └── bottom-nav.tsx   # Mobile bottom tab bar
+├── pwa-register.tsx     # Service Worker registration
 └── ui/                  # shadcn/ui components
     ├── drawer.tsx       # Mobile drawer (vaul)
     └── ...
@@ -199,25 +220,49 @@ CREATE TABLE api_keys (
 - [x] Admin UI for API keys (/admin/api-keys)
 - [x] Admin section in sidebar (admin email only)
 
-## Current Work - Ciclo 3: Calendar Module
+### Ciclo 3 - Calendar Module ✅
+
+- [x] Server Actions for events (CRUD)
+- [x] Zod validation for events
+- [x] Calendar grid component (month view)
+- [x] Event creation drawer (mobile-friendly)
+- [x] Event detail/edit view
+- [x] Event colors (8 options)
+- [x] Navigation between months
+- [x] REST API endpoints:
+  - GET /api/events - List events (with month filter)
+  - POST /api/events - Create event
+  - GET /api/events/:id - Get single event
+  - PATCH /api/events/:id - Update event
+  - DELETE /api/events/:id - Delete event
+
+### Ciclo 3.5 - PWA + Mobile Responsive ✅
+
+- [x] PWA manifest.json
+- [x] Service Worker (sw.js) with caching strategies
+- [x] PWA icons (SVG 192x192, 512x512)
+- [x] Service Worker registration component
+- [x] Bottom navigation for mobile
+- [x] Mobile-first responsive styles:
+  - Adaptive padding (p-4 sm:p-6)
+  - Responsive typography (text-2xl sm:text-3xl)
+  - Horizontal scroll filters on mobile
+  - Compact calendar grid for mobile
+  - Safe area support for notch devices
+
+## Current Work - Ciclo 4: Finance Module
 
 ### To Do
 
-- [ ] Schema events (already defined)
-- [ ] Server Actions for events (CRUD)
-- [ ] Zod validation for events
-- [ ] Calendar grid component (month view)
-- [ ] Event creation modal/sheet
-- [ ] Event detail view
-- [ ] Personal vs household event styling
+- [ ] Schema expenses (already defined)
+- [ ] Server Actions for expenses (CRUD)
+- [ ] Zod validation for expenses
+- [ ] Expense list view
+- [ ] Add expense drawer
+- [ ] Balance calculations
+- [ ] REST API endpoints
 
 ## Upcoming Work
-
-### Ciclo 4: Finance Module
-
-- Expense tracking
-- Balance calculations
-- Settlement flow
 
 ### Ciclo 5: Chores Module
 
