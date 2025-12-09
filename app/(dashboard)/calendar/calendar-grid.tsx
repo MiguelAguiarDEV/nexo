@@ -3,6 +3,7 @@
 import { DAYS_OF_WEEK } from "@/lib/constants/calendar";
 import { cn } from "@/lib/utils";
 import type { Event } from "@/types/db";
+import { memo } from "react";
 
 interface CalendarGridProps {
   year: number;
@@ -78,7 +79,7 @@ function getDateString(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-export function CalendarGrid({
+const CalendarGrid = memo(function CalendarGrid({
   year,
   month,
   events,
@@ -168,4 +169,8 @@ export function CalendarGrid({
       </div>
     </div>
   );
-}
+});
+
+CalendarGrid.displayName = "CalendarGrid";
+
+export { CalendarGrid };

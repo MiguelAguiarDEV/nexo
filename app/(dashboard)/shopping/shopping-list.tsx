@@ -20,7 +20,7 @@ import {
   Trash2,
   UtensilsCrossed,
 } from "lucide-react";
-import { useOptimistic, useTransition } from "react";
+import { memo, useOptimistic, useTransition } from "react";
 import {
   deleteShoppingItem,
   toggleShoppingItem,
@@ -46,7 +46,7 @@ interface ShoppingListProps {
   onToggleSelect: (id: number) => void;
 }
 
-export function ShoppingList({
+const ShoppingList = memo(function ShoppingList({
   items,
   typeFilter,
   selectedIds,
@@ -147,7 +147,11 @@ export function ShoppingList({
       )}
     </div>
   );
-}
+});
+
+ShoppingList.displayName = "ShoppingList";
+
+export { ShoppingList };
 
 interface ShoppingItemRowProps {
   item: ShoppingItem;
