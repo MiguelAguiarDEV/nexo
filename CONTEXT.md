@@ -252,7 +252,7 @@ CREATE TABLE api_keys (
 
 ## Current Work - Ciclo 3.6: PWA Performance Optimization ✅
 
-### Completed
+**Completed:**
 
 - [x] **Análisis de rendimiento** - Identificar cuellos de botella con Lighthouse/DevTools
 - [x] **Service Worker mejorado** - Precaching de rutas críticas y assets
@@ -270,7 +270,23 @@ CREATE TABLE api_keys (
 - ✅ Queries optimizadas: SELECT campos específicos (no SELECT *)
 - ✅ Cache headers: `private, max-age=0, stale-while-revalidate=30/60`
 - ✅ `Skeleton` component para loading states
-- [ ] **Bundle analysis** - Identificar dependencias pesadas
+- ✅ URL preview feature with OG meta tag extraction
+  - `components/url-preview.tsx` - Client-side URL preview component
+  - `app/api/preview/route.ts` - Server-side URL metadata extraction
+  - Integrated into shopping item creation form
+  - Shows title, description, image from Open Graph meta tags
+
+## Current Work - Ciclo 3.7: Shopping Module Enhancements ✅
+
+**Features Implemented:**
+
+- [x] **URL Preview Feature** - Extract and display product previews from URLs
+  - [x] `URLPreview` component with client-side Open Graph meta tag extraction
+  - [x] `/api/preview` endpoint for server-side extraction (CORS bypass)
+  - [x] Integration into `AddItemDrawer` with live preview
+  - [x] Description field (stored as `notes` in DB)
+  - [x] URL validation with proper error handling
+  - [x] Caching: 1 hour max-age + 24 hour stale-while-revalidate
 
 ## Upcoming Work - Ciclo 4: Finance Module
 
