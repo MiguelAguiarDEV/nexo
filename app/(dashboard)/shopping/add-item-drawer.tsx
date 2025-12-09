@@ -11,6 +11,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
+import { URLPreview } from "@/components/url-preview";
 import { ITEM_TYPE_CONFIG } from "@/lib/constants/shopping";
 import { cn } from "@/lib/utils";
 import type { ItemType } from "@/types/db";
@@ -53,11 +54,15 @@ export function AddItemDrawer({ defaultType }: AddItemDrawerProps) {
 
   // Form state
   const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [url, setUrl] = useState("");
   const [type, setType] = useState<ItemType>(defaultType || "food");
   const [price, setPrice] = useState("");
 
   const resetForm = () => {
     setName("");
+    setDescription("");
+    setUrl("");
     setType(defaultType || "food");
     setPrice("");
     setError(null);
@@ -78,6 +83,8 @@ export function AddItemDrawer({ defaultType }: AddItemDrawerProps) {
     formData.set("quantity", "1");
     formData.set("priority", "3");
     formData.set("currency", "EUR");
+    if (description.trim()) formData.set("notes", description.trim());
+    if (url.trim()) formData.set("url", url.trim());
 
     startTransition(async () => {
       const result = await addShoppingItem(formData);
@@ -172,6 +179,38 @@ export function AddItemDrawer({ defaultType }: AddItemDrawerProps) {
                   €
                 </span>
               </div>
+            </div>
+
+            {/* Description input */}
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground">
+                Descripción (opcional)
+              </p>
+              <textarea
+                placeholder="Detalles del producto..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="w-full p-3 text-sm border rounded-lg bg-background text-foreground placeholder:text-muted-foreground resize-none min-h-20"
+              />
+            </div>
+
+            {/* URL input */}
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground">
+                URL del producto (opcional)
+              </p>
+              <Input
+                type="url"
+                placeholder="https://example.com/product"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                className="text-sm h-10"
+              />
+              {url && (
+                <div className="mt-3 border rounded-lg overflow-hidden">
+                  <URLPreview url={url} />
+                </div>
+              )}
             </div>
 
             {/* Error */}
