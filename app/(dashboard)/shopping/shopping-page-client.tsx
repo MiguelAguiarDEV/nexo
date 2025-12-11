@@ -8,6 +8,7 @@ import { ClearCheckedButton } from "./clear-checked-button";
 import { PriceSummary } from "./price-summary";
 import { ShoppingList } from "./shopping-list";
 import { TypeFilter } from "./type-filter";
+import { ScannerModal } from "@/components/shopping/scanner-modal";
 
 interface ShoppingPageClientProps {
   items: ShoppingItem[];
@@ -101,7 +102,15 @@ export function ShoppingPageClient({ items, counts }: ShoppingPageClientProps) {
       />
 
       {/* Floating add button */}
-      <AddItemDrawer defaultType={currentType || undefined} />
+      {/* Floating Action Buttons */}
+      <div className="fixed bottom-24 right-6 z-40 flex flex-col gap-4 items-center sm:bottom-8 sm:right-8">
+         <ScannerModal />
+         <AddItemDrawer 
+           defaultType={currentType || undefined} 
+           triggerClassName="static"
+         />
+      </div>
+
     </div>
   );
 }

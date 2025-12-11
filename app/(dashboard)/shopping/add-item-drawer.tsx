@@ -45,9 +45,10 @@ const TYPE_ICONS: Record<ItemType, React.ElementType> = {
 
 interface AddItemDrawerProps {
   defaultType?: ItemType;
+  triggerClassName?: string;
 }
 
-export function AddItemDrawer({ defaultType }: AddItemDrawerProps) {
+export function AddItemDrawer({ defaultType, triggerClassName }: AddItemDrawerProps) {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -103,19 +104,22 @@ export function AddItemDrawer({ defaultType }: AddItemDrawerProps) {
       <DrawerTrigger asChild>
         <Button
           size="icon"
-          className="fixed bottom-24 lg:bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-40"
+          className={cn(
+            "h-14 w-14 rounded-full shadow-lg z-40",
+            triggerClassName || "fixed bottom-24 lg:bottom-6 right-6"
+          )}
         >
           <Plus className="h-6 w-6" />
         </Button>
       </DrawerTrigger>
 
-      <DrawerContent>
-        <div className="mx-auto w-full max-w-md">
-          <DrawerHeader>
-            <DrawerTitle>Añadir producto</DrawerTitle>
+      <DrawerContent className="max-h-[92vh] flex flex-col p-0">
+        <div className="mx-auto w-full max-w-md flex flex-col h-full">
+          <DrawerHeader className="py-2 px-4 flex-shrink-0">
+            <DrawerTitle className="text-base">Añadir producto</DrawerTitle>
           </DrawerHeader>
 
-          <div className="p-4 space-y-6">
+          <div className="flex-1 overflow-y-auto px-4 space-y-2 pb-2">
             {/* Name input */}
             <div className="space-y-2">
               <Input
@@ -129,7 +133,7 @@ export function AddItemDrawer({ defaultType }: AddItemDrawerProps) {
 
             {/* Type selector - Grid de iconos */}
             <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Tipo</p>
+              <p className="text-xs text-muted-foreground">Tipo</p>
               <div className="grid grid-cols-4 gap-2">
                 {ITEM_TYPES.map((t) => {
                   const Icon = TYPE_ICONS[t];
@@ -141,19 +145,19 @@ export function AddItemDrawer({ defaultType }: AddItemDrawerProps) {
                       type="button"
                       onClick={() => setType(t)}
                       className={cn(
-                        "flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all",
+                        "flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all text-[10px]",
                         isSelected
                           ? "border-foreground bg-foreground text-background"
                           : "border-transparent bg-muted hover:bg-muted/80"
                       )}
                     >
                       <Icon
-                        className="h-6 w-6 mb-1"
+                        className="h-5 w-5 mb-0.5"
                         style={
                           !isSelected ? { color: config.color } : undefined
                         }
                       />
-                      <span className="text-[11px] font-medium">
+                      <span className="font-medium leading-tight">
                         {config.label}
                       </span>
                     </button>
@@ -164,7 +168,7 @@ export function AddItemDrawer({ defaultType }: AddItemDrawerProps) {
 
             {/* Price input */}
             <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Precio estimado</p>
+              <p className="text-xs text-muted-foreground">Precio estimado</p>
               <div className="relative">
                 <Input
                   type="number"
@@ -173,7 +177,7 @@ export function AddItemDrawer({ defaultType }: AddItemDrawerProps) {
                   placeholder="0.00"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
-                  className="text-lg h-12 pr-10"
+                  className="text-base h-10 pr-10"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
                   €
@@ -183,20 +187,20 @@ export function AddItemDrawer({ defaultType }: AddItemDrawerProps) {
 
             {/* Description input */}
             <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 Descripción (opcional)
               </p>
               <textarea
                 placeholder="Detalles del producto..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full p-3 text-sm border rounded-lg bg-background text-foreground placeholder:text-muted-foreground resize-none min-h-20"
+                className="w-full p-2 text-xs border rounded-lg bg-background text-foreground placeholder:text-muted-foreground resize-none h-12"
               />
             </div>
 
             {/* URL input */}
             <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 URL del producto (opcional)
               </p>
               <Input
@@ -207,7 +211,7 @@ export function AddItemDrawer({ defaultType }: AddItemDrawerProps) {
                 className="text-sm h-10"
               />
               {url && (
-                <div className="mt-3 border rounded-lg overflow-hidden">
+                <div className="mt-1 border rounded-lg overflow-hidden bg-muted/30 text-xs h-20 overflow-hidden flex-shrink-0">
                   <URLPreview url={url} />
                 </div>
               )}
@@ -215,25 +219,25 @@ export function AddItemDrawer({ defaultType }: AddItemDrawerProps) {
 
             {/* Error */}
             {error && (
-              <p className="text-sm text-destructive text-center">{error}</p>
+              <p className="text-xs text-destructive text-center">{error}</p>
             )}
           </div>
 
-          <DrawerFooter>
+          <DrawerFooter className="border-t py-2 px-4 gap-1.5 flex-shrink-0">
             <Button
               onClick={handleSubmit}
               disabled={isPending}
-              className="h-12 text-base"
+              className="h-9 text-xs w-full"
             >
               {isPending ? (
-                <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
               ) : (
-                <Plus className="h-5 w-5 mr-2" />
+                <Plus className="h-3.5 w-3.5 mr-1.5" />
               )}
-              Añadir a la lista
+              Añadir
             </Button>
             <DrawerClose asChild>
-              <Button variant="outline" className="h-12">
+              <Button variant="outline" className="h-9 text-xs w-full">
                 Cancelar
               </Button>
             </DrawerClose>

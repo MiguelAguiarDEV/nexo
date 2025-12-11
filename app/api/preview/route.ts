@@ -1,81 +1,69 @@
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
+  console.log("[API Preview] POST request received");
+
   try {
-    const { url } = await request.json();
+    const body = await request.json();
+    const { url } = body;
+
+    console.log("[API Preview] URL:", url);
 
     if (!url) {
-      return NextResponse.json({ error: "URL is required" }, { status: 400 });
+      console.log("[API Preview] No URL provided");
+      return NextResponse.json({ title: "URL inválido" }, { status: 200 });
     }
 
     // Validate URL
     try {
       new URL(url);
     } catch {
-      return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
+      console.log("[API Preview] URL validation failed");
+      return NextResponse.json({ title: url }, { status: 200 });
     }
 
-    // Fetch the page
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    // Use microlink.io API for URL preview
+    const microlinkUrl = `https://api.microlink.io/?url=${encodeURIComponent(
+      url
+    )}`;
 
-    try {
-      const response = await fetch(url, {
-        headers: {
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-        },
-        redirect: "follow",
-        signal: controller.signal,
-      });
+    console.log("[API Preview] Calling microlink:", microlinkUrl);
 
-      clearTimeout(timeoutId);
+    const response = await fetch(microlinkUrl, {
+      headers: {
+        "User-Agent": "nexo-app/1.0",
+      },
+    });
 
-      if (!response.ok) {
-        return NextResponse.json(
-          { error: "Failed to fetch URL" },
-          { status: 400 }
-        );
-      }
+    console.log("[API Preview] Microlink status:", response.status);
 
-      const html = await response.text();
+    const data = await response.json();
+    console.log(
+      "[API Preview] Microlink response:",
+      JSON.stringify(data, null, 2)
+    );
 
-      // Extract meta tags
-      const titleMatch =
-        html.match(
-          /<meta\s+property=["']og:title["']\s+content=["']([^"']+)["']/
-        ) || html.match(/<title[^>]*>([^<]+)<\/title>/);
-      const descriptionMatch =
-        html.match(
-          /<meta\s+property=["']og:description["']\s+content=["']([^"']+)["']/
-        ) ||
-        html.match(
-          /<meta\s+name=["']description["']\s+content=["']([^"']+)["']/
-        );
-      const imageMatch = html.match(
-        /<meta\s+property=["']og:image["']\s+content=["']([^"']+)["']/
-      );
-
+    if (data.status === "success" && data.data) {
       const preview = {
-        title: titleMatch?.[1] || undefined,
-        description: descriptionMatch?.[1] || undefined,
-        image: imageMatch?.[1] || undefined,
+        title: data.data.title || "Sitio web",
+        description: data.data.description,
+        image: data.data.image?.url || data.data.logo?.url,
       };
 
-      // Set cache headers
+      console.log("[API Preview] Returning preview:", preview);
+
       return NextResponse.json(preview, {
         headers: {
           "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
         },
       });
-    } catch (fetchError) {
-      clearTimeout(timeoutId);
-      throw fetchError;
     }
+
+    // Fallback: return URL as title
+    console.log("[API Preview] No data from microlink, returning URL as title");
+    return NextResponse.json({ title: url }, { status: 200 });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to process request" },
-      { status: 500 }
-    );
+    console.error("[API Preview] Error:", error);
+    return NextResponse.json({ title: "Error al cargar" }, { status: 200 });
   }
 }

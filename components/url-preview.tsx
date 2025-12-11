@@ -2,158 +2,84 @@
 
 import { useEffect, useState } from "react";
 
-interface URLPreview {
-  title?: string;
-  description?: string;
-  image?: string;
-  url: string;
-  favicon?: string;
-}
-
 interface URLPreviewProps {
   url: string;
 }
 
 export function URLPreview({ url }: URLPreviewProps) {
-  const [preview, setPreview] = useState<URLPreview | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!url || !isValidUrl(url)) {
-      setPreview(null);
+    console.log("[URLPreview] Starting fetch for URL:", url);
+
+    if (!url) {
+      setLoading(false);
       return;
     }
 
-    const fetchPreview = async () => {
-      setLoading(true);
-      setError(null);
-
+    const fetchData = async () => {
       try {
-        // Try to fetch page and extract Open Graph meta tags
-        const response = await fetch(url, {
-          mode: "no-cors",
-          headers: {
-            "User-Agent":
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-          },
+        console.log("[URLPreview] Calling /api/preview");
+        const res = await fetch("/api/preview", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url }),
         });
 
-        // For CORS-blocked requests, we'll try a different approach
-        if (response.type === "opaque") {
-          // Try server-side extraction via a proxy (if available)
-          await extractViaServer(url);
-        } else {
-          const html = await response.text();
-          extractMetaTags(html, url);
-        }
-      } catch (err) {
-        // Silently fail - show basic URL info instead
-        console.log("Preview unavailable for URL:", url);
+        console.log("[URLPreview] Response status:", res.status);
+        const json = await res.json();
+        console.log("[URLPreview] Response data:", json);
+
+        setData(json);
+      } catch (error) {
+        console.error("[URLPreview] Error:", error);
+        setData({ title: url });
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchPreview();
+    fetchData();
   }, [url]);
 
-  const extractViaServer = async (targetUrl: string) => {
-    try {
-      const response = await fetch("/api/preview", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: targetUrl }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setPreview({
-          url: targetUrl,
-          title: data.title,
-          description: data.description,
-          image: data.image,
-        });
-      }
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-    }
-  };
-
-  const extractMetaTags = (html: string, targetUrl: string) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-
-    const getMetaContent = (property: string) => {
-      const element =
-        doc.querySelector(`meta[property="${property}"]`) ||
-        doc.querySelector(`meta[name="${property}"]`);
-      return element?.getAttribute("content");
-    };
-
-    const title = getMetaContent("og:title") || doc.title;
-    const description = getMetaContent("og:description") || undefined;
-    const image = getMetaContent("og:image") || undefined;
-
-    if (title || description || image) {
-      setPreview({
-        title,
-        description,
-        image,
-        url: targetUrl,
-      });
-    }
-
-    setLoading(false);
-  };
-
-  if (!url || loading || !preview) {
-    return null;
+  if (!url || loading) {
+    return <div className="p-2 text-xs">{loading ? "Cargando..." : ""}</div>;
   }
 
-  const domain = new URL(preview.url).hostname;
+  if (!data || !data.title) {
+    return (
+      <div className="p-2 text-xs text-muted-foreground truncate">{url}</div>
+    );
+  }
+
+  const domain = (() => {
+    try {
+      return new URL(data.url || url).hostname;
+    } catch {
+      return "Sitio web";
+    }
+  })();
 
   return (
-    <a
-      href={preview.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
-    >
-      {preview.image && (
-        <div className="aspect-video w-full overflow-hidden bg-muted">
+    <div className="flex gap-2 p-2 h-full">
+      {data.image && (
+        <div className="w-12 h-12 flex-shrink-0 rounded bg-muted overflow-hidden">
           <img
-            src={preview.image}
-            alt={preview.title || "Preview"}
+            src={data.image}
+            alt="preview"
             className="w-full h-full object-cover"
-            onError={() => {
-              // Image failed to load
+            onError={(e) => {
+              console.log("[URLPreview] Image failed to load");
+              (e.target as HTMLImageElement).style.display = "none";
             }}
           />
         </div>
       )}
-      <div className="p-3">
-        {preview.title && (
-          <h4 className="font-semibold text-sm line-clamp-2">
-            {preview.title}
-          </h4>
-        )}
-        {preview.description && (
-          <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
-            {preview.description}
-          </p>
-        )}
-        <p className="text-xs text-muted-foreground mt-2">{domain}</p>
+      <div className="flex-1 min-w-0 flex flex-col justify-center gap-0.5">
+        <h4 className="font-semibold text-xs line-clamp-2">{data.title}</h4>
+        <p className="text-xs text-muted-foreground line-clamp-1">{domain}</p>
       </div>
-    </a>
+    </div>
   );
-}
-
-function isValidUrl(string: string): boolean {
-  try {
-    new URL(string);
-    return true;
-  } catch (_) {
-    return false;
-  }
 }
