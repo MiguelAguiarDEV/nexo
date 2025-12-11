@@ -48,6 +48,10 @@ lib/
 ├── db/migrations/       # SQL migrations
 ├── navigation.ts        # Navigation items + admin config
 ├── utils.ts             # Utility functions (cn)
+├── services/            # Business logic (Service Layer)
+│   ├── scan.ts          # AI receipt analysis
+│   ├── shopping.ts      # Shopping unification logic
+│   └── finance.ts       # Expense creation logic
 ├── constants/
 │   ├── shopping.ts      # Item types and priority configs
 │   └── calendar.ts      # Event colors, days, months
@@ -288,6 +292,21 @@ CREATE TABLE api_keys (
   - [x] URL validation with proper error handling
   - [x] Caching: 1 hour max-age + 24 hour stale-while-revalidate
 
+## Current Work - Ciclo 3.8: Receipt Scanning & Service Architecture ✅
+
+**Features Implemented:**
+
+- [x] **Modular Service Architecture** - Decoupled business logic from Server Actions
+  - [x] `ScanService`: Google Gemini 2.0 Flash Lite integration
+  - [x] `ShoppingService`: Fuzzy matching for auto-checking list items
+  - [x] `FinanceService`: Expense creation with user synchronization (FK fix)
+- [x] **Receipt Scanner UI**
+  - [x] `ScannerModal`: Camera capture and file upload
+  - [x] Real-time AI analysis with preview
+- [x] **Cross-Module Integration**
+  - [x] Scanning creates optional expense
+  - [x] Scanning auto-checks items from shopping list
+
 ## Upcoming Work - Ciclo 4: Finance Module
 
 ### Pending Tasks
@@ -407,6 +426,10 @@ const handleAction = () => {
 8. **Always create REST API alongside server actions** for external access
 9. Reference `lib/api/auth.ts` for API authentication pattern
 10. Admin features restricted to `ADMIN_EMAIL` in `lib/navigation.ts`
+11. **Service Layer Pattern:**
+    - Put complex business logic in `lib/services/`
+    - Keep Server Actions as thin controllers
+    - Use Services for cross-module operations (e.g. Shopping <-> Finance)
 
 ## REST API Usage
 
