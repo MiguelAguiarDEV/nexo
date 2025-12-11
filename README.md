@@ -2,7 +2,9 @@
 
 ## 1. Arquitectura del Sistema: El Concepto "Híbrido"
 
-La arquitectura se basa en un **Núcleo Unificado con Vistas Contextuales**. No construiremos dos aplicaciones separadas (una personal y una para la casa), sino una sola plataforma que filtra la información según el "sombrero" que lleves puesto (Usuario Individual vs. Miembro de la Casa).
+La arquitectura se basa en- [x] **Escáner de Tickets con IA**
+  - [x] Integración Google Gemini 1.5 Flash-8B.
+  - [x] UI de cámara y subida de archivos (`ScannerModal`). y una para la casa), sino una sola plataforma que filtra la información según el "sombrero" que lleves puesto (Usuario Individual vs. Miembro de la Casa).
 
 ### Diagrama Lógico
 * **La Cáscara (Shell):** Es la interfaz principal. Contiene la navegación y el selector de contexto.

@@ -273,7 +273,11 @@ CREATE TABLE api_keys (
 - ✅ Loading skeletons: `PageHeaderSkeleton`, `ShoppingListSkeleton`, `CalendarGridSkeleton`
 - ✅ Queries optimizadas: SELECT campos específicos (no SELECT *)
 - ✅ Cache headers: `private, max-age=0, stale-while-revalidate=30/60`
-- ✅ `Skeleton` component para loading states
+- ✅ `Skeleton` component
+1.  **`ScanService` (`lib/services/scan.ts`)**
+    *   **Responsabilidad:** Interactuar con la IA (Google Gemini) para extraer datos de imágenes.
+    *   **Modelo:** Usa `gemini-1.5-flash-8b` (Versión optimizada para alta velocidad y bajo coste).
+    *   **Métodos:** `analyzeReceipt(file: File): Promise<ReceiptData>`
 - ✅ URL preview feature with OG meta tag extraction
   - `components/url-preview.tsx` - Client-side URL preview component
   - `app/api/preview/route.ts` - Server-side URL metadata extraction
@@ -297,7 +301,7 @@ CREATE TABLE api_keys (
 **Features Implemented:**
 
 - [x] **Modular Service Architecture** - Decoupled business logic from Server Actions
-  - [x] `ScanService`: Google Gemini 2.0 Flash Lite integration
+  - [x] `ScanService`: Google Gemini 1.5 Flash-8B integration (Optimized for speed/cost)
   - [x] `ShoppingService`: Fuzzy matching for auto-checking list items
   - [x] `FinanceService`: Expense creation with user synchronization (FK fix)
 - [x] **Receipt Scanner UI**
