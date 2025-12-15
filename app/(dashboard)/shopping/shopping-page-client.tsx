@@ -101,14 +101,13 @@ export function ShoppingPageClient({ items, counts }: ShoppingPageClientProps) {
         onToggleSelect={handleToggleSelect}
       />
 
-      {/* Floating add button */}
       {/* Floating Action Buttons */}
-      <div className="fixed bottom-24 right-6 z-40">
-         <ScannerModal />
+      <div className="fixed bottom-20 right-4 z-40 flex flex-col-reverse gap-3 pb-[env(safe-area-inset-bottom)]">
          <AddItemDrawer 
            defaultType={currentType || undefined} 
-           triggerClassName="static"
+           triggerClassName="static h-14 w-14"
          />
+         <ScannerModal />
       </div>
 
     </div>

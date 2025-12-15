@@ -103,14 +103,14 @@ export function ScannerModal() {
         <Button 
           size="icon" 
           variant="secondary" 
-          className="h-12 w-12 rounded-full shadow-md bg-background border hover:bg-accent"
+          className="h-10 w-10 rounded-full shadow-md bg-background border hover:bg-accent"
         >
-          <Camera className="h-6 w-6" />
+          <Camera className="h-5 w-5" />
           <span className="sr-only">Escanear Ticket</span>
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
-        <div className="mx-auto w-full max-w-sm">
+      <DrawerContent className="max-h-[85vh]">
+        <div className="mx-auto w-full max-w-sm flex flex-col">
           <DrawerHeader>
             <DrawerTitle>Escanear Ticket</DrawerTitle>
             <DrawerDescription>
@@ -118,11 +118,11 @@ export function ScannerModal() {
             </DrawerDescription>
           </DrawerHeader>
           
-          <div className="p-4 flex flex-col items-center justify-center space-y-4">
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col items-center justify-center space-y-3">
             {!imagePreview ? (
-              <div className="w-full h-64 border-2 border-dashed rounded-lg flex flex-col items-center justify-center bg-muted/50 cursor-pointer" onClick={() => fileInputRef.current?.click()}>
-                <Camera className="h-12 w-12 text-muted-foreground mb-2" />
-                <p className="text-sm text-muted-foreground">Toca para tomar foto</p>
+              <div className="w-full h-40 border-2 border-dashed rounded-lg flex flex-col items-center justify-center bg-muted/50 cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+                <Camera className="h-10 w-10 text-muted-foreground mb-2" />
+                <p className="text-xs text-muted-foreground">Toca para tomar foto</p>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -133,8 +133,8 @@ export function ScannerModal() {
                 />
               </div>
             ) : (
-              <div className="space-y-4 w-full">
-                <div className="relative w-full h-48 rounded-lg overflow-hidden">
+              <div className="space-y-3 w-full">
+                <div className="relative w-full h-32 rounded-lg overflow-hidden">
                    {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={imagePreview} alt="Preview" className="object-cover w-full h-full" />
                   {isScanning && (
@@ -148,7 +148,7 @@ export function ScannerModal() {
                 </div>
 
                 {result && (
-                  <div className="bg-card border rounded-lg p-4 space-y-3">
+                  <div className="bg-card border rounded-lg p-3 space-y-2">
                     <div className="flex justify-between items-center border-b pb-2">
                       <div>
                         <h3 className="font-semibold">{result.store}</h3>
@@ -157,7 +157,7 @@ export function ScannerModal() {
                       <span className="text-xl font-bold">{result.total.toFixed(2)}€</span>
                     </div>
                     
-                    <div className="max-h-40 overflow-y-auto space-y-2 text-sm">
+                    <div className="max-h-24 overflow-y-auto space-y-1 text-sm">
                       {result.items.map((item, i) => (
                         <div key={i} className="flex justify-between">
                           <span>{item.name}</span>
@@ -171,25 +171,25 @@ export function ScannerModal() {
             )}
           </div>
 
-          <DrawerFooter>
+          <DrawerFooter className="flex-shrink-0 border-t pt-3 pb-4 space-y-2">
             {result ? (
               <div className="flex gap-2 w-full">
-                <Button variant="outline" onClick={handleRetake} className="flex-1">
+                <Button variant="outline" onClick={handleRetake} className="flex-1 h-10">
                   Repetir
                 </Button>
-                <Button onClick={handleConfirm} className="flex-1">
-                  <Check className="mr-2 h-4 w-4" /> Confirmar
+                <Button onClick={handleConfirm} className="flex-1 h-10">
+                  <Check className="mr-1.5 h-4 w-4" /> Confirmar
                 </Button>
               </div>
             ) : (
               !isScanning && imagePreview && (
-                <Button onClick={handleRetake} variant="outline" className="w-full">
+                <Button onClick={handleRetake} variant="outline" className="w-full h-10">
                    Intentar de nuevo
                 </Button>
               )
             )}
             <DrawerClose asChild>
-              <Button variant="ghost">Cancelar</Button>
+              <Button variant="ghost" className="w-full h-9">Cancelar</Button>
             </DrawerClose>
           </DrawerFooter>
         </div>

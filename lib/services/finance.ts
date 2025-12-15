@@ -2,6 +2,24 @@ import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
 import { type ReceiptData } from "@/lib/services/scan";
 
+// ============================================================================
+// Types & Interfaces
+// ============================================================================
+
+export interface CreateExpenseParams {
+  receipt: ReceiptData;
+  userId: string;
+  orgId: string | null;
+}
+
+export interface CreateExpenseResult {
+  expenseId: number;
+}
+
+// ============================================================================
+// Finance Service
+// ============================================================================
+
 export class FinanceService {
   /**
    * Ensures the user exists in the local database to satisfy FK constraints.
@@ -53,12 +71,12 @@ export class FinanceService {
 
   /**
    * Creates an expense from receipt data
+   * 
+   * @param params - Typed parameters for expense creation
+   * @returns CreateExpenseResult with the new expense ID
    */
-  static async createExpenseFromReceipt(
-    receipt: ReceiptData,
-    userId: string,
-    orgId: string | null
-  ) {
+  static async createExpenseFromReceipt(params: CreateExpenseParams): Promise<CreateExpenseResult> {
+    const { receipt, userId, orgId } = params;
     console.log("FinanceService: Creating expense...");
     
     // CRITICAL: Ensure user exists to prevent FK violation
@@ -67,7 +85,7 @@ export class FinanceService {
     // If orgId is present, ensure it exists too (optional but good practice)
     // For now assuming org sync handling is separate or implicit via webhooks
 
-    await db.execute({
+    const result = await db.execute({
       sql: `INSERT INTO expenses (amount, description, category, date, payer_id, org_id) VALUES (?, ?, ?, ?, ?, ?)`,
       args: [
         receipt.total,
@@ -79,6 +97,10 @@ export class FinanceService {
       ]
     });
     
-    console.log("FinanceService: Expense created successfully");
+    const expenseId = Number(result.lastInsertRowid);
+    console.log(`FinanceService: Expense created successfully with ID ${expenseId}`);
+    
+    return { expenseId };
   }
 }
+

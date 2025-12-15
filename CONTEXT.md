@@ -50,8 +50,9 @@ lib/
 ├── utils.ts             # Utility functions (cn)
 ├── services/            # Business logic (Service Layer)
 │   ├── scan.ts          # AI receipt analysis
-│   ├── shopping.ts      # Shopping unification logic
-│   └── finance.ts       # Expense creation logic
+│   ├── shopping.ts      # Shopping list management
+│   ├── finance.ts       # Expense creation logic
+│   └── pipeline.ts      # Purchase flow orchestration
 ├── constants/
 │   ├── shopping.ts      # Item types and priority configs
 │   └── calendar.ts      # Event colors, days, months
@@ -310,6 +311,25 @@ CREATE TABLE api_keys (
 - [x] **Cross-Module Integration**
   - [x] Scanning creates optional expense
   - [x] Scanning auto-checks items from shopping list
+
+## Current Work - Ciclo 3.9: Mobile PWA & Pipeline Architecture ✅
+
+**Features Implemented:**
+
+- [x] **Mobile Responsiveness for iPhone PWA**
+  - [x] FAB buttons with flex-col layout and iOS safe-area support
+  - [x] Scanner modal optimized for mobile (max-h-[85vh], compact layout)
+  - [x] Improved footer button visibility and sizing
+
+- [x] **Functional Programming Pipeline**
+  - [x] `PipelineService` (`lib/services/pipeline.ts`): Orchestrates purchase flow
+  - [x] Typed interfaces: `PipelineParams`, `PipelineResult`
+  - [x] `processPurchase()`: Chains scan → add to shopping → mark bought → add finance
+  
+- [x] **Shopping-Finance Integration**
+  - [x] `ShoppingService.addItemsFromReceipt()`: Adds new items and marks as bought
+  - [x] `FinanceService.createExpenseFromReceipt()`: Returns `CreateExpenseResult`
+  - [x] Full pipeline integration in `confirmScanResults` action
 
 ## Upcoming Work - Ciclo 4: Finance Module
 
