@@ -68,24 +68,28 @@ export function ShoppingPageClient({ items, counts }: ShoppingPageClientProps) {
   }, []);
 
   return (
-    <div className="space-y-4 pb-24">
-      {/* Price summary */}
-      <PriceSummary
-        items={filteredItems}
-        selectedIds={selectedIds}
-        onClearSelection={handleClearSelection}
-      />
+    <div className="flex flex-col h-full space-y-4">
+      {/* Price summary - Fixed */}
+      <div className="shrink-0">
+        <PriceSummary
+          items={filteredItems}
+          selectedIds={selectedIds}
+          onClearSelection={handleClearSelection}
+        />
+      </div>
 
-      {/* Type filter */}
-      <TypeFilter
-        currentType={currentType}
-        counts={counts}
-        onTypeChange={handleTypeChange}
-      />
+      {/* Type filter - Fixed */}
+      <div className="shrink-0">
+        <TypeFilter
+          currentType={currentType}
+          counts={counts}
+          onTypeChange={handleTypeChange}
+        />
+      </div>
 
-      {/* Clear checked button */}
+      {/* Clear checked button - Fixed */}
       {hasChecked && (
-        <div className="flex justify-end">
+        <div className="flex justify-end shrink-0">
           <ClearCheckedButton
             hasChecked={hasChecked}
             typeFilter={currentType}
@@ -93,13 +97,15 @@ export function ShoppingPageClient({ items, counts }: ShoppingPageClientProps) {
         </div>
       )}
 
-      {/* Shopping list */}
-      <ShoppingList
-        items={items}
-        typeFilter={currentType}
-        selectedIds={selectedIds}
-        onToggleSelect={handleToggleSelect}
-      />
+      {/* Shopping list - Scrollable */}
+      <div className="flex-1 overflow-y-auto min-h-0">
+        <ShoppingList
+          items={items}
+          typeFilter={currentType}
+          selectedIds={selectedIds}
+          onToggleSelect={handleToggleSelect}
+        />
+      </div>
 
       {/* Floating Action Buttons */}
       <div className="fixed bottom-20 right-4 z-40 flex flex-col-reverse gap-3 pb-[env(safe-area-inset-bottom)]">
