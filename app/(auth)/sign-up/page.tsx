@@ -52,7 +52,7 @@ export default function SignUpPage() {
       await signUp.authenticateWithRedirect({
         strategy,
         redirectUrl: "/sso-callback",
-        redirectUrlComplete: "/",
+        redirectUrlComplete: "/home",
       });
     } catch (err: unknown) {
       const clerkError = err as { errors?: { message: string }[] };
@@ -74,7 +74,7 @@ export default function SignUpPage() {
 
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
-        router.push("/");
+        router.replace("/home");
       }
     } catch (err: unknown) {
       const clerkError = err as { errors?: { message: string }[] };
