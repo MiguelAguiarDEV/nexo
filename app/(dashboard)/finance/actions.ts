@@ -2,11 +2,16 @@
 
 import { getSafeAuth, getScope } from "@/lib/auth";
 import { db } from "@/lib/db";
-import type { Expense } from "@/types/db";
+import type { Expense, ExpenseItem } from "@/types/db";
 import { revalidatePath } from "next/cache";
 
 // Time period type
 export type TimePeriod = "all" | "month" | "week" | "day";
+
+// Expense with items
+export interface ExpenseWithItems extends Expense {
+  items?: ExpenseItem[];
+}
 
 // Helper to map DB row to Expense
 function rowToExpense(row: Record<string, unknown>): Expense {
@@ -53,7 +58,7 @@ function getDateRange(period: TimePeriod): { start: string; end: string } | null
 // Get expenses with optional time period filter
 export async function getExpenses(
   period: TimePeriod = "month"
-): Promise<Expense[]> {
+): Promise<ExpenseWithItems[]> {
   const { userId, orgId } = await getSafeAuth();
   const scope = getScope(orgId);
 
@@ -79,7 +84,28 @@ export async function getExpenses(
   sql += ` ORDER BY date DESC, created_at DESC`;
 
   const result = await db.execute({ sql, args });
-  return result.rows.map((row) => rowToExpense(row as Record<string, unknown>));
+  const expenses = result.rows.map((row) => rowToExpense(row as Record<string, unknown>));
+  
+  // Fetch items for each expense
+  for (const expense of expenses) {
+    const itemsResult = await db.execute({
+      sql: `SELECT * FROM expense_items WHERE expense_id = ? ORDER BY created_at ASC`,
+      args: [expense.id],
+    });
+    
+    if (itemsResult.rows.length > 0) {
+      expense.items = itemsResult.rows.map(row => ({
+        id: row.id as number,
+        expense_id: row.expense_id as number,
+        name: row.name as string,
+        quantity: row.quantity as number,
+        price: row.price as number,
+        created_at: row.created_at as string,
+      }));
+    }
+  }
+  
+  return expenses;
 }
 
 // Get expense summary (total, count, average by category)
@@ -244,6 +270,13 @@ export async function deleteExpense(
       }
     }
 
+    // Delete expense items first (will cascade, but being explicit)
+    await db.execute({
+      sql: `DELETE FROM expense_items WHERE expense_id = ?`,
+      args: [id],
+    });
+
+    // Delete expense
     await db.execute({
       sql: `DELETE FROM expenses WHERE id = ?`,
       args: [id],

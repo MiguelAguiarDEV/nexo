@@ -5,11 +5,11 @@ import { TimePeriodFilter, type TimePeriod } from "./time-period-filter";
 import { ExpenseList } from "./expense-list";
 import { SummaryCards } from "./summary-cards";
 import { CSVImport } from "./csv-import";
-import type { Expense } from "@/types/db";
+import type { ExpenseWithItems } from "./actions";
 import { getExpenses, getExpenseSummary } from "./actions";
 
 interface FinancePageClientProps {
-  initialExpenses: Expense[];
+  initialExpenses: ExpenseWithItems[];
   initialSummary: {
     total: number;
     count: number;
