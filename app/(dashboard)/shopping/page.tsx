@@ -9,10 +9,10 @@ export default async function ShoppingPage() {
   ]);
 
   return (
-    <div className="p-4 sm:p-6">
-      <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6">
+    <div className="flex flex-col h-[calc(100vh-3.5rem-5rem)] lg:h-[calc(100vh-4rem)] p-4 sm:p-6">
+      <div className="max-w-2xl mx-auto w-full flex flex-col h-full space-y-4 sm:space-y-6">
         {/* Header */}
-        <div>
+        <div className="shrink-0">
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
             Lista de compra
           </h1>
