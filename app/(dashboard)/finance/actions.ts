@@ -84,7 +84,7 @@ export async function getExpenses(
   sql += ` ORDER BY date DESC, created_at DESC`;
 
   const result = await db.execute({ sql, args });
-  const expenses = result.rows.map((row) => rowToExpense(row as Record<string, unknown>));
+  const expenses: ExpenseWithItems[] = result.rows.map((row) => rowToExpense(row as Record<string, unknown>));
   
   // Fetch items for each expense
   for (const expense of expenses) {

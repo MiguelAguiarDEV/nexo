@@ -94,7 +94,7 @@ export function ExpenseList({ expenses }: ExpenseListProps) {
                       </div>
                       <p className="text-sm text-muted-foreground">
                         {expense.category || "Sin categoría"}
-                        {hasItems && ` • ${expense.items.length} items`}
+                        {hasItems && expense.items && ` • ${expense.items.length} items`}
                       </p>
                     </div>
                     <div className="flex items-center gap-3 ml-4">
@@ -114,7 +114,7 @@ export function ExpenseList({ expenses }: ExpenseListProps) {
                   </div>
 
                   {/* Line items (lineas de compra) */}
-                  {hasItems && isExpanded && (
+                  {hasItems && isExpanded && expense.items && (
                     <div className="border-t bg-muted/30 px-4 py-3">
                       <p className="text-xs font-medium text-muted-foreground mb-2">
                         Líneas de compra:
