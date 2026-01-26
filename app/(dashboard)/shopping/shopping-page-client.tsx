@@ -98,7 +98,7 @@ export function ShoppingPageClient({ items, counts }: ShoppingPageClientProps) {
       )}
 
       {/* Shopping list - Scrollable */}
-      <div className="flex-1 overflow-y-auto min-h-0 -mx-1 px-1">
+      <div className="flex-1 overflow-y-auto min-h-0">
         <ShoppingList
           items={items}
           typeFilter={currentType}
