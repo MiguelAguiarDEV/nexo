@@ -101,6 +101,16 @@ export interface Expense {
   created_at: string;
 }
 
+// Expense item (line item from receipt)
+export interface ExpenseItem {
+  id: number;
+  expense_id: number;
+  name: string;
+  quantity: number;
+  price: number;
+  created_at: string;
+}
+
 // Expense split
 export interface ExpenseSplit {
   id: number;

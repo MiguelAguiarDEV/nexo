@@ -100,6 +100,18 @@ export class FinanceService {
     const expenseId = Number(result.lastInsertRowid);
     console.log(`FinanceService: Expense created successfully with ID ${expenseId}`);
     
+    // Store line items (lineas de compra)
+    if (receipt.items && receipt.items.length > 0) {
+      console.log(`FinanceService: Storing ${receipt.items.length} line items...`);
+      for (const item of receipt.items) {
+        await db.execute({
+          sql: `INSERT INTO expense_items (expense_id, name, quantity, price) VALUES (?, ?, ?, ?)`,
+          args: [expenseId, item.name, item.quantity || 1, item.price]
+        });
+      }
+      console.log("FinanceService: Line items stored successfully");
+    }
+    
     return { expenseId };
   }
 }
