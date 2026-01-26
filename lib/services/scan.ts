@@ -20,6 +20,7 @@ const receiptSchema = z.object({
       z.object({
         name: z.string().describe("Name of the product"),
         price: z.number().describe("Price of the product"),
+        quantity: z.number().default(1).describe("Quantity of the product (default: 1)"),
       })
     )
     .describe("List of items purchased"),

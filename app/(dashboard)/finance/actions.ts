@@ -41,7 +41,6 @@ function getDateRange(period: TimePeriod): { start: string; end: string } | null
       start.setHours(0, 0, 0, 0);
       break;
     case "month":
-      start.setMonth(now.getMonth());
       start.setDate(1);
       start.setHours(0, 0, 0, 0);
       break;

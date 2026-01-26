@@ -106,7 +106,7 @@ export class FinanceService {
       for (const item of receipt.items) {
         await db.execute({
           sql: `INSERT INTO expense_items (expense_id, name, quantity, price) VALUES (?, ?, ?, ?)`,
-          args: [expenseId, item.name, 1, item.price]
+          args: [expenseId, item.name, item.quantity || 1, item.price]
         });
       }
       console.log("FinanceService: Line items stored successfully");

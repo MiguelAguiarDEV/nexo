@@ -153,14 +153,14 @@ function formatDateHeader(dateStr: string): string {
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 
-  const dateOnly = date.toISOString().split('T')[0];
-  const todayOnly = today.toISOString().split('T')[0];
-  const yesterdayOnly = yesterday.toISOString().split('T')[0];
+  // Compare date strings directly for efficiency
+  const todayStr = today.toISOString().split('T')[0];
+  const yesterdayStr = yesterday.toISOString().split('T')[0];
 
-  if (dateOnly === todayOnly) {
+  if (dateStr === todayStr) {
     return "Hoy";
   }
-  if (dateOnly === yesterdayOnly) {
+  if (dateStr === yesterdayStr) {
     return "Ayer";
   }
 
